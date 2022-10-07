@@ -5,6 +5,8 @@ using UnityEngine;
 public class Touch : MonoBehaviour
 {
     private Journal _journal;
+    public AudioClip CollectSound;
+    public AudioClip DidNotCollect;
 
     void Start()
     {
@@ -39,12 +41,14 @@ public class Touch : MonoBehaviour
         {
             _journal.AddToJournal($"Collected {item.Name}!", true);
             item.Collected = true;
+            other.gameObject.GetComponent<AudioSource>().PlayOneShot(CollectSound);
             other.gameObject.GetComponent<SpriteRenderer>().color = Color.green;
         }
         else if (other.gameObject.CompareTag("Item") && item.CollectionType == CollectionType.NotCollectible)
         {
             _journal.AddToJournal($"Could not collect {item.Name}, it was stuck!", true);
             item.Collected = false;
+            other.gameObject.GetComponent<AudioSource>().PlayOneShot(DidNotCollect);
             other.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         }
     }
